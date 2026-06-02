@@ -11,8 +11,6 @@ jobs:
     steps:
     - name: Clonar repositorio
       uses: actions/checkout@v4
-      with:
-        fetch-depth: 0 # Descarga todo el historial para evitar desfases de Git
 
     - name: Configurar Python
       uses: actions/setup-python@v5
@@ -27,13 +25,8 @@ jobs:
     - name: Ejecutar Extractor
       run: python extractor.py
 
-    - name: Forzar sincronizacion y subir cambios
-      run: |
-        git config --global user.name "github-actions[bot]"
-        git config --global user.email "41898282+github-actions[bot]@users.noreply.github.com"
-        git add live.m3u8
-        # Solo guarda si hay un cambio real en el archivo .m3u8
-        git diff-index --quiet HEAD || git commit -m "Actualizacion automatica del enlace HLS"
-        # Descarga cambios remotos y fusiona priorizando lo local antes de subir
-        git pull origin main --rebase
-        git push origin main
+    - name: Subir archivo M3U8 de forma automatica
+      uses: stefanzweifel/git-auto-commit-action@v5
+      with:
+        commit_message: "Actualizacion automatica del enlace HLS"
+        file_pattern: 'live.m3u8'
