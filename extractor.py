@@ -6,7 +6,7 @@ YOUTUBE_URL = "https://youtube.com"
 
 try:
     # Comando optimizado para extraer el formato HLS nativo de YouTube
-    comando = ["yt-dlp", "-f", "b", "-g", YOUTUBE_URL]
+    comando = ["yt-dlp", "-f", "bv*[ext=mp4]+ba[ext=m4a]/b[ext=mp4]", "-g", YOUTUBE_URL]
     url_m3u8 = subprocess.check_output(comando).decode("utf-8").strip()
     
     # Validamos que se haya extraído algo para evitar archivos vacíos
